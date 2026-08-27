@@ -2,8 +2,7 @@
 
 An interactive IT helpdesk dashboard built as a portfolio project while studying for the Google IT Support Professional Certificate. It demonstrates networking fundamentals, identity provisioning workflows, security concepts, and CompTIA A+ study material — all in one place, built entirely with vanilla HTML, CSS, and JavaScript (no frameworks).
 
-**[Live demo](https://hunterbambam-design.github.io/Test-IT-dashboard-V2.1/)** — replace this with your GitHub Pages link once it's enabled (see below).
-
+**[Live demo](https://hunterbambam-design.github.io/Test-IT-dashboard-V2.1/)**
 ## What's in it
 
 - **Diagnostics & Subnet Calculator** — simulated ping/traceroute, plus a real IPv4 subnet calculator and RAID capacity/fault-tolerance calculator
