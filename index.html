@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Operations Dashboard v2.1</title>
+  <meta name="description" content="An interactive IT helpdesk dashboard demonstrating networking math, identity provisioning, security concepts, and CompTIA A+ study tools. Built with vanilla HTML, CSS, and JavaScript.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+  <header class="dashboard-header">
+    <div class="header-main">
+      <h1>IT Operations Dashboard <span class="version-tag">v2.1</span></h1>
+      <div class="header-actions">
+        <button id="btn-project-info" class="btn-slate btn-small" type="button" aria-expanded="false" aria-controls="project-info-panel">ℹ️ Project Info</button>
+        <span class="demo-banner"><span class="demo-dot" aria-hidden="true"></span>Demo Mode &mdash; Simulated Data</span>
+        <button id="btn-export-json" class="btn-slate btn-small" type="button">💾 Export Data</button>
+        <button id="btn-load-demo" class="btn-slate btn-small" type="button">📂 Load Demo Data</button>
+        <button id="btn-theme-toggle" class="btn-icon" type="button" aria-label="Switch to light theme">🌙</button>
+      </div>
+    </div>
+    <p class="subtitle">Standalone testing environment for Tier 1 Helpdesk workflows &amp; CompTIA A+ utilities &mdash; nothing here touches real systems.</p>
+
+    <div class="skills-row" aria-label="Skills demonstrated in this project">
+      <span class="skill-tag">JavaScript</span>
+      <span class="skill-tag">Networking</span>
+      <span class="skill-tag">Identity &amp; Access Management</span>
+      <span class="skill-tag">Security Concepts</span>
+      <span class="skill-tag">Accessibility (WCAG)</span>
+      <span class="skill-tag">CompTIA A+</span>
+      <span class="skill-tag">Google IT Support</span>
+    </div>
+
+    <div id="project-info-panel" class="changelog-panel hidden">
+      <div class="tab-row" role="tablist" aria-label="Project info sections">
+        <button type="button" class="tab-btn active" id="tabbtn-about" role="tab" aria-selected="true" aria-controls="tab-about" data-tab="tab-about">About</button>
+        <button type="button" class="tab-btn" id="tabbtn-changelog-tab" role="tab" aria-selected="false" aria-controls="tab-changelog-tab" data-tab="tab-changelog-tab" tabindex="-1">What's New</button>
+        <button type="button" class="tab-btn" id="tabbtn-limitations-tab" role="tab" aria-selected="false" aria-controls="tab-limitations-tab" data-tab="tab-limitations-tab" tabindex="-1">Known Limitations</button>
+      </div>
+
+      <div id="tab-about" class="tab-content active" role="tabpanel" aria-labelledby="tabbtn-about">
+        <h3 class="mini-heading">Why this exists</h3>
+        <p class="info-text">I'm studying for the Google IT Support Professional Certificate and building toward an entry-level IT role. I built this dashboard to practice the concepts hands-on instead of just reading about them — networking math, identity provisioning, ticket triage, and security fundamentals, all in one place I could keep iterating on.</p>
+        <h3 class="mini-heading" style="margin-top: 16px;">What I'd do differently for production</h3>
+        <p class="info-text">This is a portfolio demo, not production software, and it shows in a few deliberate places: no backend, no auth, no real API calls anywhere. If I were building the real version of any one of these tools, I'd add server-side validation instead of trusting client input, real authentication before touching identity data, rate limiting on anything resembling the phishing/security tools, and proper logging instead of a browser's local storage. I kept this version client-side on purpose — it's honest about being a demo, and it means anyone can try it with zero setup.</p>
+      </div>
+
+      <div id="tab-changelog-tab" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-changelog-tab" hidden>
+        <h3 class="mini-heading">v2.1 Patch Notes</h3>
+        <ul>
+          <li>Nav reorganized into categories (Networking / Identity / Security / Reference / Session) instead of one long row</li>
+          <li>Added this About / What's New / Known Limitations panel, and a visible Skills tag row</li>
+          <li>Added an interactive OSI Model layer diagram to the A+ Exam Engine</li>
+          <li>Fixed dropdown menus clipping longer option text (e.g. "Active Directory format") on narrow screens</li>
+          <li>Fixed the tab strip wrapping awkwardly on mobile — it now scrolls horizontally instead</li>
+          <li>Fixed the ticket board's 3-column layout being too cramped on phones — it now stacks to 1 column below 480px</li>
+          <li>Full keyboard-navigation and screen-reader pass across every tool</li>
+        </ul>
+        <h3 class="mini-heading" style="margin-top: 16px;">v2.0 Patch Notes</h3>
+        <ul>
+          <li>Added a Phishing Email Header Analyzer — real regex-based parsing of SPF/DKIM/DMARC and originating IP, not simulated output</li>
+          <li>Added a Common Issue Decision Tree — interactive Tier 1 troubleshooting wizard for 4 classic issues</li>
+          <li>Added a Batch User CSV Generator — downloads a real AD/M365-formatted CSV from a list of names</li>
+        </ul>
+        <h3 class="mini-heading" style="margin-top: 16px;">v1.9 Patch Notes</h3>
+        <ul>
+          <li>Added an HTTP Status Code Lookup (new tab in Diagnostics &amp; Subnet Calculator)</li>
+          <li>Added a Password Strength &amp; Entropy Analyzer — real entropy math, nothing saved or sent anywhere</li>
+          <li>Ping/Traceroute now occasionally simulates a connection timeout instead of always succeeding</li>
+        </ul>
+        <h3 class="mini-heading" style="margin-top: 16px;">v1.8 Patch Notes</h3>
+        <ul>
+          <li>Restored the Firewall Alert Monitor card and nav link (accidentally dropped in the last update)</li>
+          <li>Restored labels and live-region announcements across every input and output box</li>
+          <li>Added proper ARIA tab roles to every tabbed card</li>
+          <li>Subnet Calculator and RAID Calculator now compute real results, not placeholders</li>
+          <li>Ticket board is now interactive — tickets move between New → In Progress → Resolved</li>
+          <li>Account Provisioner now generates AD, Entra ID, or Linux user-creation scripts</li>
+          <li>CLI Reference is now a searchable Windows/Linux command list</li>
+          <li>A+ Exam Engine now includes a scored 5-question practice quiz alongside flashcards</li>
+          <li>Added Export Data (downloads a JSON snapshot) and Load Demo Data buttons</li>
+          <li>Quiz rebuilt with native accessible form controls; defensive null-checks added throughout</li>
+        </ul>
+      </div>
+
+      <div id="tab-limitations-tab" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-limitations-tab" hidden>
+        <h3 class="mini-heading">Known Limitations</h3>
+        <ul>
+          <li>Ticket triage is simple keyword matching, not a trained ML classifier — it won't catch phrasing it wasn't written for</li>
+          <li>Network diagnostics and the firewall alert are fully simulated — no real requests are made anywhere in this app</li>
+          <li>The Subnet Calculator, RAID Calculator, and Phishing Header Analyzer are the exceptions: those do real math/parsing on whatever you enter, not canned output</li>
+          <li>The Phishing Header Analyzer checks a handful of common signals (SPF/DKIM/DMARC, domain mismatches) — it's a demonstration of the concept, not a substitute for a real email security gateway</li>
+          <li>The Decision Tree covers 4 common issues with a fixed set of branches — it's illustrative, not an exhaustive troubleshooting KB</li>
+          <li>Generated scripts and CSVs (AD / Entra ID / Linux / bulk import) are syntactically realistic templates for demo purposes — always review before running anything like this against a real system</li>
+          <li>All data lives in your browser's local storage only — clearing site data or switching browsers resets everything except an exported JSON snapshot</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="status-strip">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>System status: Operational</span>
+      <span class="status-sep">·</span>
+      <span id="status-latency">Latency: 14ms</span>
+    </div>
+
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat">
+        <span class="stat-value" id="stat-diagnostics">0</span>
+        <span class="stat-label">Diagnostics Run</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-triaged">0</span>
+        <span class="stat-label">Tickets Triaged</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-provisioned">0</span>
+        <span class="stat-label">Accounts Provisioned</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-alerts">0</span>
+        <span class="stat-label">Alerts Viewed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-quiz-score">—</span>
+        <span class="stat-label">A+ Quiz Avg</span>
+      </div>
+    </div>
+
+    <nav class="section-nav" aria-label="Jump to dashboard section">
+      <div class="nav-group">
+        <span class="nav-group-label">Networking</span>
+        <a href="#section-network">Diagnostics &amp; Subnet</a>
+        <a href="#section-triage">Ticketing Board</a>
+        <a href="#section-decision-tree">Decision Tree</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-group-label">Identity</span>
+        <a href="#section-identity">Provisioner</a>
+        <a href="#section-csv">Batch CSV</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-group-label">Security</span>
+        <a href="#section-password">Password Check</a>
+        <a href="#section-phishing">Phishing Check</a>
+        <a href="#section-security">Firewall</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-group-label">Reference</span>
+        <a href="#section-cli">CLI Reference</a>
+        <a href="#section-quiz">A+ Exam Prep</a>
+      </div>
+      <div class="nav-group">
+        <span class="nav-group-label">Session</span>
+        <a href="#section-activity">Activity Log</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="dashboard-grid">
+    <!-- TOOL 1: NETWORK DIAGNOSTICS, SUBNET & RAID CALCULATORS -->
+    <section id="section-network" class="card card--accent-green" aria-labelledby="net-heading">
+      <h2 id="net-heading">🌐 Diagnostics &amp; Subnet Calculator</h2>
+      <p class="card-desc">Simulate connectivity tests, or compute real IPv4 subnet and RAID array math client-side.</p>
+
+      <div class="tab-row" role="tablist" aria-label="Diagnostics tools">
+        <button type="button" class="tab-btn active" id="tabbtn-ping" role="tab" aria-selected="true" aria-controls="tab-ping" data-tab="tab-ping">Ping/Trace</button>
+        <button type="button" class="tab-btn" id="tabbtn-subnet" role="tab" aria-selected="false" aria-controls="tab-subnet" data-tab="tab-subnet" tabindex="-1">Subnet Calc</button>
+        <button type="button" class="tab-btn" id="tabbtn-raid" role="tab" aria-selected="false" aria-controls="tab-raid" data-tab="tab-raid" tabindex="-1">RAID Calc</button>
+        <button type="button" class="tab-btn" id="tabbtn-http" role="tab" aria-selected="false" aria-controls="tab-http" data-tab="tab-http" tabindex="-1">HTTP Codes</button>
+      </div>
+
+      <!-- Tab Content: Ping/Trace -->
+      <div id="tab-ping" class="tab-content active" role="tabpanel" aria-labelledby="tabbtn-ping">
+        <div class="form-row">
+          <div class="input-grow">
+            <label for="net_target" class="sr-only">Target domain or IP address</label>
+            <input type="text" id="net_target" placeholder="e.g. google.com or 8.8.8.8">
+          </div>
+          <div class="select-wrapper">
+            <label for="net_cmd" class="sr-only">Diagnostic command</label>
+            <select id="net_cmd">
+              <option value="ping">PING</option>
+              <option value="trace">TRACEROUTE</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-diagnostics" class="btn-green" type="button"><span class="btn-label">Run Simulated Diagnostic</span></button>
+        <div id="net_out" class="output output--terminal" role="status" aria-live="polite"></div>
+        <p class="last-updated hidden" id="net_last_updated"></p>
+      </div>
+
+      <!-- Tab Content: Subnet Calculator -->
+      <div id="tab-subnet" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-subnet" hidden>
+        <div class="form-row">
+          <div class="input-grow">
+            <label for="subnet_ip" class="sr-only">IPv4 address</label>
+            <input type="text" id="subnet_ip" placeholder="IP Address (e.g., 192.168.1.50)">
+          </div>
+          <div class="select-wrapper">
+            <label for="subnet_cidr" class="sr-only">Subnet mask (CIDR)</label>
+            <select id="subnet_cidr">
+              <option value="8">/8 (255.0.0.0)</option>
+              <option value="16">/16 (255.255.0.0)</option>
+              <option value="24" selected>/24 (255.255.255.0)</option>
+              <option value="28">/28 (255.255.255.240)</option>
+              <option value="30">/30 (255.255.255.252)</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-calc-subnet" class="btn-green" type="button"><span class="btn-label">Calculate Subnet</span></button>
+        <div id="subnet_out" class="output output--terminal" role="status" aria-live="polite"></div>
+        <p class="last-updated hidden" id="subnet_last_updated"></p>
+      </div>
+
+      <!-- Tab Content: RAID Calculator -->
+      <div id="tab-raid" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-raid" hidden>
+        <div class="form-row">
+          <div class="input-grow">
+            <label for="raid_drive_size" class="sr-only">Drive size in gigabytes</label>
+            <input type="number" id="raid_drive_size" placeholder="Drive Size (GB)" value="1000" min="1">
+          </div>
+          <div class="input-grow">
+            <label for="raid_drive_count" class="sr-only">Number of drives</label>
+            <input type="number" id="raid_drive_count" placeholder="Number of Drives" value="4" min="2">
+          </div>
+          <div class="select-wrapper">
+            <label for="raid_level" class="sr-only">RAID level</label>
+            <select id="raid_level">
+              <option value="0">RAID 0 (Striping)</option>
+              <option value="1">RAID 1 (Mirroring)</option>
+              <option value="5">RAID 5 (Parity)</option>
+              <option value="10">RAID 10 (1+0)</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-calc-raid" class="btn-green" type="button"><span class="btn-label">Calculate Array</span></button>
+        <div id="raid_out" class="output output--terminal" role="status" aria-live="polite"></div>
+        <p class="last-updated hidden" id="raid_last_updated"></p>
+      </div>
+
+      <!-- Tab Content: HTTP Status Code Lookup -->
+      <div id="tab-http" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-http" hidden>
+        <label for="http_search" class="sr-only">Search HTTP status codes</label>
+        <input type="text" id="http_search" placeholder="Search a code or keyword (e.g., 404, timeout, unauthorized)...">
+        <p id="http_result_count" class="output-hint"></p>
+        <div id="http_list" class="cli-command-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- TOOL 2: TICKETING KANBAN BOARD & TRIAGE -->
+    <section id="section-triage" class="card card--accent-blue" aria-labelledby="triage-heading">
+      <h2 id="triage-heading">🎟️ Helpdesk Ticket Operations</h2>
+      <p class="card-desc">Automated keyword triage and an interactive ticket queue &mdash; move tickets across the board as work progresses.</p>
+
+      <label for="t_input" class="sr-only">Ticket description</label>
+      <textarea id="t_input" rows="2" placeholder="Describe issue (e.g., John Doe cannot connect to printing service)"></textarea>
+      <button id="btn-triage" class="btn-blue" type="button"><span class="btn-label">Auto-Route &amp; Create Ticket</span></button>
+      <div id="t_out" class="output output--neutral" role="status" aria-live="polite"></div>
+
+      <div id="triage-suggestion" class="suggestion-box hidden">
+        <span id="triage-suggestion-text"></span>
+        <button id="btn-provision-suggested" class="btn-blue btn-small" type="button">Provision User</button>
+      </div>
+
+      <h3 class="mini-heading">Active Ticket Board</h3>
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <span class="column-title">New / Unassigned</span>
+          <div id="queue-new" class="kanban-list" aria-live="polite"></div>
+        </div>
+        <div class="kanban-column">
+          <span class="column-title">In Progress</span>
+          <div id="queue-progress" class="kanban-list" aria-live="polite"></div>
+        </div>
+        <div class="kanban-column">
+          <span class="column-title">Resolved</span>
+          <div id="queue-resolved" class="kanban-list" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOL: COMMON ISSUE DECISION TREE -->
+    <section id="section-decision-tree" class="card card--accent-blue" aria-labelledby="dt-heading">
+      <h2 id="dt-heading">🧭 Common Issue Decision Tree</h2>
+      <p class="card-desc">Step-by-step Tier 1 troubleshooting flow &mdash; pick an issue and follow the branches to a resolution.</p>
+
+      <div id="dt-breadcrumb" class="dt-breadcrumb" aria-live="polite"></div>
+      <div id="dt-node" role="status" aria-live="polite"></div>
+      <button id="btn-dt-restart" class="btn-slate btn-small hidden" type="button">Start Over</button>
+    </section>
+
+    <!-- TOOL 3: MULTI-PLATFORM ACCOUNT PROVISIONER -->
+    <section id="section-identity" class="card card--accent-purple" aria-labelledby="prov-heading">
+      <h2 id="prov-heading">👤 Multi-Platform Provisioner</h2>
+      <p class="card-desc">Generate sample identity attributes and matching script syntax for AD, Entra ID, or Linux &mdash; demo only, not for real accounts.</p>
+
+      <div class="form-row">
+        <div class="input-grow">
+          <label for="u_name" class="sr-only">Employee full name</label>
+          <input type="text" id="u_name" placeholder="Employee Full Name">
+        </div>
+        <div class="select-wrapper">
+          <label for="prov_platform" class="sr-only">Target platform</label>
+          <select id="prov_platform">
+            <option value="ad">Active Directory</option>
+            <option value="entra">Microsoft Entra ID</option>
+            <option value="linux">Linux System User</option>
+          </select>
+        </div>
+      </div>
+      <button id="btn-provision" class="btn-blue" type="button"><span class="btn-label">Generate Script</span></button>
+
+      <div id="u_out" class="output output--success" role="status" aria-live="polite"></div>
+      <div id="ps-output-container" class="hidden">
+        <h3 class="mini-heading" id="ps-output-heading">Generated Script</h3>
+        <div id="ps-script-output" class="output output--terminal" style="font-size: 0.85rem; word-break: break-all;"></div>
+        <p class="ps-note">Note: hardcoding plaintext passwords is discouraged in production scripts — shown here for demo clarity only.</p>
+        <button id="btn-copy-script" class="btn-slate btn-small" type="button">📋 Copy Command</button>
+      </div>
+      <p class="last-updated hidden" id="u_last_updated"></p>
+
+      <h3 class="mini-heading">Recently Provisioned</h3>
+      <ul id="provisioned-list" class="mini-history"></ul>
+    </section>
+
+    <!-- TOOL: BATCH USER CSV GENERATOR -->
+    <section id="section-csv" class="card card--accent-purple" aria-labelledby="csv-heading">
+      <h2 id="csv-heading">📊 Batch User CSV Generator</h2>
+      <p class="card-desc">Enter one full name per line to generate a downloadable CSV formatted for bulk AD / Microsoft 365 user import &mdash; demo only.</p>
+
+      <label for="csv_names" class="sr-only">Employee names, one per line</label>
+      <textarea id="csv_names" rows="4" placeholder="One full name per line, e.g.&#10;Jordan Lee&#10;Sarah Chen&#10;Marcus Webb"></textarea>
+
+      <div class="form-row">
+        <div class="select-wrapper">
+          <label for="csv_platform" class="sr-only">Target platform</label>
+          <select id="csv_platform">
+            <option value="ad">Active Directory format</option>
+            <option value="m365">Microsoft 365 format</option>
+          </select>
+        </div>
+        <button id="btn-generate-csv" class="btn-blue" type="button"><span class="btn-label">Generate &amp; Download CSV</span></button>
+      </div>
+
+      <div id="csv_out" class="output output--neutral" role="status" aria-live="polite"></div>
+      <p class="last-updated hidden" id="csv_last_updated"></p>
+    </section>
+
+    <!-- TOOL 4: COMMAND LINE CHEAT SHEET -->
+    <section id="section-cli" class="card card--accent-slate" aria-labelledby="cli-heading">
+      <h2 id="cli-heading">💻 Interactive CLI Reference</h2>
+      <p class="card-desc">Search essential Windows &amp; Linux commands for helpdesk troubleshooting.</p>
+
+      <label for="cli_search" class="sr-only">Search commands</label>
+      <input type="text" id="cli_search" placeholder="Search commands (e.g., ipconfig, chmod, flushdns)...">
+      <p id="cli_result_count" class="output-hint"></p>
+      <div id="cli_list" class="cli-command-list" aria-live="polite"></div>
+    </section>
+
+    <!-- TOOL: PASSWORD STRENGTH & ENTROPY ANALYZER -->
+    <section id="section-password" class="card card--accent-amber" aria-labelledby="pw-heading">
+      <h2 id="pw-heading">🔐 Password Strength &amp; Entropy Analyzer</h2>
+      <p class="card-desc">Estimates entropy and rough crack time client-side &mdash; nothing is stored or sent anywhere. Don't type a real password here anyway; use a throwaway example.</p>
+
+      <label for="pw_input" class="sr-only">Password to analyze</label>
+      <input type="text" id="pw_input" placeholder="Type a sample password to analyze...">
+      <div id="pw_out" class="output output--neutral" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- TOOL: PHISHING EMAIL HEADER ANALYZER -->
+    <section id="section-phishing" class="card card--accent-red" aria-labelledby="phish-heading">
+      <h2 id="phish-heading">🎣 Phishing Header Analyzer</h2>
+      <p class="card-desc">Paste raw email headers to extract the originating IP and check SPF/DKIM/DMARC results &mdash; real text parsing, run entirely in your browser.</p>
+
+      <label for="phish_input" class="sr-only">Raw email headers</label>
+      <textarea id="phish_input" rows="6" placeholder="Paste raw email headers here..."></textarea>
+      <div class="form-row">
+        <button id="btn-analyze-headers" class="btn-red" type="button"><span class="btn-label">Analyze Headers</span></button>
+        <button id="btn-load-sample-headers" class="btn-slate btn-small" type="button">Load Sample Headers</button>
+      </div>
+
+      <div id="phish_out" class="output output--neutral" role="status" aria-live="polite"></div>
+      <p class="last-updated hidden" id="phish_last_updated"></p>
+    </section>
+
+    <!-- TOOL 5: FIREWALL LOG (STATIC SAMPLE) -->
+    <section id="section-security" class="card card--accent-red" aria-labelledby="fw-heading">
+      <h2 id="fw-heading">🛡️ Firewall Alert Monitor</h2>
+      <p class="card-desc">Displays one static sample alert &mdash; not a live audit feed.</p>
+      <button id="btn-logs" class="btn-red" type="button"><span class="btn-label">Show Sample Alert</span></button>
+
+      <p class="output-hint" id="l_out_hint">Try it → show a sample alert to see the format.</p>
+      <div id="l_out" class="output output--danger"></div>
+      <p class="last-updated hidden" id="l_last_updated"></p>
+      <p id="l_out_status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- TOOL 6: COMPTIA A+ EXAM PRACTICE QUIZ + FLASHCARDS -->
+    <section id="section-quiz" class="card card--accent-slate" aria-labelledby="quiz-heading">
+      <h2 id="quiz-heading">🧠 CompTIA A+ (220-1201 &amp; 220-1202) Exam Engine</h2>
+      <p class="card-desc">Interactive flashcards and a scored practice quiz.</p>
+
+      <div class="tab-row" role="tablist" aria-label="A+ study tools">
+        <button type="button" class="tab-btn active" id="tabbtn-flashcards" role="tab" aria-selected="true" aria-controls="tab-flashcards" data-tab="tab-flashcards">Flashcards</button>
+        <button type="button" class="tab-btn" id="tabbtn-quiz" role="tab" aria-selected="false" aria-controls="tab-quiz" data-tab="tab-quiz" tabindex="-1">Practice Quiz</button>
+        <button type="button" class="tab-btn" id="tabbtn-osi" role="tab" aria-selected="false" aria-controls="tab-osi" data-tab="tab-osi" tabindex="-1">OSI Diagram</button>
+      </div>
+
+      <!-- Tab: Flashcards -->
+      <div id="tab-flashcards" class="tab-content active" role="tabpanel" aria-labelledby="tabbtn-flashcards">
+        <div class="select-wrapper" style="width:100%; margin-bottom:10px;">
+          <label for="flashcard-category" class="sr-only">Study card category</label>
+          <select id="flashcard-category">
+            <option value="all">All Categories</option>
+            <option value="Ports">Networking Ports</option>
+            <option value="Cabling">Cabling &amp; Connectors</option>
+            <option value="RAID">RAID Levels</option>
+            <option value="Troubleshooting">Troubleshooting Methodology</option>
+            <option value="IPv4">IPv4 Address Classes</option>
+            <option value="OSI">OSI Model Layers</option>
+          </select>
+        </div>
+        <div class="flashcard-container">
+          <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard, click or press Enter to flip">
+            <span id="card-category-tag" class="flashcard-category-tag"></span>
+            <span id="card-label" class="flashcard-label">Prompt</span>
+            <div id="card-content" class="flashcard-content"></div>
+          </div>
+        </div>
+        <p class="card-progress" id="card-progress"></p>
+        <button id="btn-next-card" class="btn-slate" type="button">➡️ Next Random Card</button>
+      </div>
+
+      <!-- Tab: Quiz Engine -->
+      <div id="tab-quiz" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-quiz" hidden>
+        <div id="quiz-container">
+          <p class="output-hint">Answer all 5 questions, then submit for your score.</p>
+          <div id="quiz-questions"></div>
+          <div id="quiz-results" class="quiz-results-text" role="status" aria-live="polite"></div>
+          <div class="quiz-actions">
+            <button id="btn-submit-quiz" class="btn-blue" type="button">Submit Quiz</button>
+            <button id="btn-reset-quiz" class="btn-slate btn-small" type="button">New Quiz</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: OSI Model Diagram -->
+      <div id="tab-osi" class="tab-content" role="tabpanel" aria-labelledby="tabbtn-osi" hidden>
+        <p class="output-hint">Click or tap a layer to see what it does.</p>
+        <div id="osi-diagram" class="osi-diagram"></div>
+        <div id="osi-detail" class="osi-detail hidden" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- TOOL 7: ACTIVITY LOG & AUDIT -->
+    <section id="section-activity" class="card card--accent-slate" aria-labelledby="log-heading">
+      <h2 id="log-heading">📜 Operations Log</h2>
+      <p class="card-desc">Tracks your actions in browser storage across session refreshes. Click an entry to reload it into its tool.</p>
+      <ul id="activity-list" class="activity-list" aria-live="polite"></ul>
+      <button id="btn-clear-log" class="btn-slate btn-small" type="button">Clear Log History</button>
+    </section>
+  </div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>
