@@ -1244,6 +1244,18 @@ To: alex@example-corp.local`;
     renderKanban();
   }
 
+  function setTicketPriority(id, newLevel) {
+    const tickets = readTickets();
+    const ticket = tickets.find(t => t.id === id);
+    if (!ticket) return;
+    const badgeClassMap = { CRITICAL: 'badge--critical', HIGH: 'badge--high', MEDIUM: 'badge--medium', LOW: 'badge--low' };
+    ticket.level = newLevel;
+    ticket.badgeClass = badgeClassMap[newLevel] || 'badge--low';
+    writeTickets(tickets);
+    renderKanban();
+    logActivity('triage', `Manually reprioritized ticket to (${newLevel})`, { text: ticket.text });
+  }
+
   function renderKanban() {
     const tickets = readTickets();
     const columns = {
@@ -1279,9 +1291,17 @@ To: alex@example-corp.local`;
         const actions = document.createElement('div');
         actions.className = 'ticket-card-actions';
 
-        const badge = document.createElement('span');
-        badge.className = `badge ${ticket.badgeClass}`;
-        badge.textContent = ticket.level;
+        const badge = document.createElement('select');
+        badge.className = `ticket-priority-select badge ${ticket.badgeClass}`;
+        badge.setAttribute('aria-label', 'Change ticket priority');
+        ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].forEach(level => {
+          const opt = document.createElement('option');
+          opt.value = level;
+          opt.textContent = level;
+          if (level === ticket.level) opt.selected = true;
+          badge.appendChild(opt);
+        });
+        badge.addEventListener('change', (e) => setTicketPriority(ticket.id, e.target.value));
         actions.appendChild(badge);
 
         if (status === 'resolved') {
