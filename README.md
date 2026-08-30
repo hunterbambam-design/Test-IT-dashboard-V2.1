@@ -1,6 +1,6 @@
 # IT Operations Dashboard
 
-🚀 **[Click Here to Open the Live Demo](https://github.io)**
+🚀 **[Click Here to Open the Live Demo](https://hunterbambam-design.github.io/it-operations-dashboard/)**
 
 A zero-setup, browser-based sandbox for practicing entry-level helpdesk and IT support work — ticket triage, network math, identity provisioning, and phishing analysis — without touching real infrastructure.
 
