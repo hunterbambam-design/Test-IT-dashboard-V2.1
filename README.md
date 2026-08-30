@@ -1,5 +1,6 @@
-```markdown
 # IT Operations Dashboard
+
+🚀 **[Click Here to Open the Live Demo](https://github.io)**
 
 A zero-setup, browser-based sandbox for practicing entry-level helpdesk and IT support work — ticket triage, network math, identity provisioning, and phishing analysis — without touching real infrastructure.
 
@@ -30,4 +31,3 @@ This project is intentionally a demo, and it's upfront about that boundary rathe
 ## Tech Stack
 
 Vanilla JavaScript, semantic HTML5, and hand-written CSS using custom properties for dark/light theming. No frameworks, no build step, no backend.
-```
